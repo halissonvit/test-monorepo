@@ -35,6 +35,7 @@ jobs:
 
       # Runs tests
       - name: tests
+        run: yarn workspace backend run test
 
       # Deploy
       - uses: akhileshns/heroku-deploy@v3.5.7 # This is the action
