@@ -1,23 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
+  const [apiData, setApiData] = React.useState();
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const fetchStatus = async () => {
+      try {
+        const response = await fetch(process.env.REACT_APP_API_URL + "/health");
+        const json = await response.json();
+        setApiData(json);
+      } catch (err) {
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchStatus();
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+
+        <pre style={{ textAlign: "left" }}>
+          <code>{!isLoading && JSON.stringify(apiData || {}, null, 2)}</code>
+        </pre>
       </header>
     </div>
   );
